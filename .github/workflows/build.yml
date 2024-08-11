@@ -1,0 +1,48 @@
+name: Build Check
+
+permissions: write-all
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - "v*.*.*"
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lingmo:
+    name: LingmoOS 2.0
+    runs-on: ubuntu-latest
+    container: docker.io/library/debian:trixie-slim
+    steps:
+    - name: Install Git
+      run: |
+        apt update && apt install -y git
+
+    - name: Checkout Source
+      uses: actions/checkout@v4
+      with:
+        submodules: 'true'
+
+    - name: Update repository
+      run: apt-get update -y
+
+    - name: Install the basic dev packages
+      run: apt-get install -y equivs curl git devscripts lintian build-essential automake autotools-dev cmake g++
+    
+    - name: Install build dependencies
+      run: mk-build-deps -i -t "apt --yes --no-install-recommends" -r
+    
+    
+    - name: Build Package
+      run: |
+        dpkg-buildpackage -b -uc -us -j$(nproc)
+        mv ../*.deb ./
+    
+    - uses: actions/upload-artifact@v4
+      with:
+        name: lingmo-kwin-plugins
+        path: |
+          *.deb
+        compression-level: 9 # maximum compression
