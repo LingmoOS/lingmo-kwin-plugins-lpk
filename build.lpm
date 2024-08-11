@@ -10,7 +10,7 @@ url="https://github.com/LingmoOS/lingmo-kwin-plugins-lpk"
 license=('GPL')
 groups=('cutefish-git')
 depends=('kconfig' 'kdecoration' 'kguiaddons' 'kcoreaddons' 'kconfigwidgets' 'kwindowsystem'
-         'kwayland' 'kwin' 'kdeclarative' 'plasma-framework' 'lingmoui')
+         'kwayland' 'kwin' 'kdeclarative' 'plasma-framework5' 'lingmoui')
 makedepends=('extra-cmake-modules' 'ninja' 'qt5-tools' 'git')
 provides=("$pkgname")
 conflicts=("$pkgname" "deepin-kwin")
